@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hayat AI - Investor Presentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        .slide {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 80px;
+            scroll-snap-align: start;
+        }
+        .slide h1 { font-size: 72px; font-weight: 700; margin-bottom: 20px; text-align: center; }
+        .slide h2 { font-size: 48px; font-weight: 600; margin-bottom: 40px; text-align: center; }
+        .slide h3 { font-size: 32px; font-weight: 600; margin-bottom: 20px; }
+        .slide p { font-size: 24px; line-height: 1.6; max-width: 900px; text-align: center; }
+        
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; width: 100%; max-width: 1400px; margin-top: 40px; }
+        .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 60px; width: 100%; max-width: 1200px; margin-top: 40px; }
+        .card { background: #1a1a1a; padding: 40px; border-radius: 20px; }
+        .card h3 { color: #fff; margin-bottom: 20px; font-size: 28px; }
+        .card .big-number { font-size: 64px; font-weight: 700; margin: 20px 0; }
+        .card .label { font-size: 18px; color: #999; margin-top: 10px; }
+        
+        .red { color: #ff3b30; }
+        .orange { color: #ff9500; }
+        .green { color: #34c759; }
+        .blue { color: #007aff; }
+        .purple { color: #af52de; }
+        .gold { color: #ffcc00; }
+        
+        canvas { max-width: 800px; max-height: 500px; margin: 40px auto; }
+        
+        .subtitle { font-size: 28px; color: #999; margin-top: 10px; }
+        
+        .flow { display: flex; align-items: center; justify-content: center; gap: 20px; margin: 40px 0; flex-wrap: wrap; }
+        .flow-item { background: #1a1a1a; padding: 30px 40px; border-radius: 15px; font-size: 20px; }
+        .flow-arrow { font-size: 36px; color: #666; }
+        
+        ul { list-style: none; font-size: 20px; line-height: 2; }
+        ul li:before { content: "• "; color: #007aff; font-weight: bold; margin-right: 10px; }
+    </style>
+</head>
+<body>
+
+<!-- SLIDE 1: TITLE -->
+<div class="slide" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <h1>Hayat AI</h1>
+    <p class="subtitle">Digital Twin Healthspan Platform for UAE</p>
+</div>
+
+<!-- SLIDE 2: THE $11 BILLION CRISIS -->
+<div class="slide" style="background: #000;">
+    <h2>The $11 Billion Crisis</h2>
+    <div class="grid-3">
+        <div class="card">
+            <h3 class="red">🔴 Triple Threat</h3>
+            <div class="big-number red">40%</div>
+            <div class="label">CVD deaths (80% preventable)</div>
+            <div class="big-number red" style="font-size: 48px; margin-top: 30px;">20.7%</div>
+            <div class="label">Diabetes prevalence (2nd globally)</div>
+            <div class="big-number red" style="font-size: 48px; margin-top: 30px;">12%</div>
+            <div class="label">Cancer deaths (40-50% preventable)</div>
+        </div>
+        <div class="card">
+            <h3 class="orange">💰 Economic Burden</h3>
+            <div class="big-number orange">$11B</div>
+            <div class="label">Annual cost (AED 40B)</div>
+            <div class="big-number orange" style="font-size: 48px; margin-top: 30px;">60-70%</div>
+            <div class="label">Preventable burden</div>
+            <div class="big-number orange" style="font-size: 48px; margin-top: 30px;">16 Years</div>
+            <div class="label">Healthspan gap (7th worst globally)</div>
+        </div>
+        <div class="card">
+            <h3 class="red">🎯 At Risk NOW</h3>
+            <div class="big-number red">213,000</div>
+            <div class="label">Thiqa members (age 50+)</div>
+            <div class="big-number" style="font-size: 40px; margin-top: 30px;">AED 20-30B</div>
+            <div class="label">Annual citizen healthcare (Abu Dhabi Gov)</div>
+            <div style="margin-top: 30px; font-size: 22px; font-weight: 600;">
+                27% of members = <span class="red">60-70% of costs</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 3: HEALTHSPAN GAP CHART -->
+<div class="slide" style="background: #0a0a0a;">
+    <h2>UAE's 16-Year Healthspan Crisis</h2>
+    <canvas id="healthspanChart"></canvas>
+    <p style="color: #999; margin-top: 20px;">UAE worsened 45% (11→16 years) while top countries improved 23%</p>
+</div>
+
+<!-- SLIDE 4: WHAT IS DIGITAL TWIN? -->
+<div class="slide" style="background: #000;">
+    <h2 class="blue">What is a Digital Twin?</h2>
+    <div class="grid-2">
+        <div class="card">
+            <h3>🧬 Your Virtual Health Clone</h3>
+            <p style="text-align: left; font-size: 20px; line-height: 1.8;">
+                A Digital Twin is an AI-powered virtual replica of your body that predicts health risks before they happen. 
+                It integrates 6 data sources (genetics, wearables, labs, imaging, lifestyle, family history) to create a 
+                comprehensive health model that evolves with you.
+            </p>
+        </div>
+        <div class="card">
+            <h3>⚙️ How Hayat AI Works</h3>
+            <div class="flow" style="flex-direction: column; align-items: flex-start; gap: 15px;">
+                <div class="flow-item" style="width: 100%;">1. Data Collection → 6 sources integrated</div>
+                <div class="flow-item" style="width: 100%;">2. AI Analysis → Predict risks 3-5 years ahead</div>
+                <div class="flow-item" style="width: 100%;">3. Personalized Plan → Ramadan-optimized, Arabic</div>
+                <div class="flow-item" style="width: 100%;">4. Continuous Monitoring → Real-time adjustments</div>
+                <div class="flow-item" style="width: 100%;">5. Proven Outcomes → +10 Health Score, 75%+ retention</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 5: WHY DIGITAL TWIN AI WINS -->
+<div class="slide" style="background: #000;">
+    <h2 class="green">Why Digital Twin AI Wins</h2>
+    <div class="grid-3">
+        <div class="card">
+            <h3 class="green">✅ Proven Technology</h3>
+            <div class="big-number green">93%</div>
+            <div class="label">Cancer detection accuracy (Nature, 373 citations)</div>
+            <div class="big-number green" style="font-size: 48px; margin-top: 20px;">90%</div>
+            <div class="label">Cost reduction (chronic disease mgmt)</div>
+            <div style="margin-top: 20px; font-size: 20px;">
+                <strong>20+ years</strong> Digital Twin research<br>
+                <span style="color: #999;">Mount Sinai, 12M patients</span>
+            </div>
+        </div>
+        <div class="card">
+            <h3 class="blue">💰 Market Validation</h3>
+            <div style="margin-top: 20px;">
+                <div style="font-size: 24px; font-weight: 600;">Twin Health</div>
+                <div class="big-number blue">$950M</div>
+                <div class="label">Valuation (Aug 2025), $296M raised</div>
+            </div>
+            <div style="margin-top: 30px;">
+                <div style="font-size: 24px; font-weight: 600;">PrediSurge</div>
+                <div class="big-number blue" style="font-size: 48px;">€6.5M</div>
+                <div class="label">Series A (Oct 2023)</div>
+            </div>
+            <div style="margin-top: 20px; font-size: 18px; font-weight: 600;">
+                → Investors believe in Digital Twin health tech
+            </div>
+        </div>
+        <div class="card">
+            <h3 class="purple">🛡️ UAE-Specific Moat</h3>
+            <ul style="text-align: left; margin-top: 20px;">
+                <li><strong>Emirati Genetics:</strong> 800K genomes, 30-40% higher accuracy</li>
+                <li><strong>Ramadan Protocols:</strong> 40%+ adherence boost</li>
+                <li><strong>Government Access:</strong> Daman/Thiqa, 790K members</li>
+                <li><strong>6-Source Integration:</strong> vs competitors' 1-2</li>
+                <li><strong>Arabic Language:</strong> Native interface</li>
+            </ul>
+            <div style="margin-top: 20px; font-size: 18px; font-weight: 600;">
+                → Western competitors can't replicate (3-5 year barriers)
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 6: 11.4X RETURNS -->
+<div class="slide" style="background: #000;">
+    <h2 class="gold">11.4x Returns in 5 Years</h2>
+    <div class="grid-3">
+        <div class="card">
+            <h3 class="orange">💵 The Ask</h3>
+            <div class="big-number gold">$15M</div>
+            <div class="label">Seed raise</div>
+            <div style="margin-top: 30px; font-size: 20px;">
+                $35M pre-money<br>
+                $50M post-money
+            </div>
+            <div style="margin-top: 30px; text-align: left; font-size: 18px;">
+                <strong>Use of Funds:</strong><br>
+                • Team: $4M (27%)<br>
+                • Product: $6M (40%)<br>
+                • Clinical: $3M (20%)<br>
+                • Operations: $2M (13%)
+            </div>
+        </div>
+        <div class="card">
+            <h3 class="purple">📈 5-Year Projections</h3>
+            <div style="margin-top: 20px; text-align: left; font-size: 18px; line-height: 2.2;">
+                <strong>Year 2 (Series A):</strong><br>
+                5,925 members, <span class="purple" style="font-size: 24px; font-weight: 700;">$10.7M ARR</span><br><br>
+                <strong>Year 3 (Break-even):</strong><br>
+                14,036 members, <span class="purple" style="font-size: 24px; font-weight: 700;">$25.3M ARR</span><br><br>
+                <strong>Year 5 (Exit Ready):</strong><br>
+                38,191 members, <span class="purple" style="font-size: 32px; font-weight: 700;">$68.7M ARR</span><br>
+                <span style="color: #999;">49% EBITDA margin, 18% penetration, 15% churn</span>
+            </div>
+        </div>
+        <div class="card">
+            <h3 class="gold">🎯 Returns</h3>
+            <div class="big-number gold" style="font-size: 96px;">11.4x</div>
+            <div class="label">Returns in 5 years</div>
+            <div class="big-number gold" style="font-size: 56px; margin-top: 30px;">63% IRR</div>
+            <div class="label">Internal rate of return</div>
+            <div class="big-number" style="font-size: 48px; margin-top: 30px;">$570M</div>
+            <div class="label">Valuation (8.3x ARR, conservative)</div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 7: GROWTH CHART -->
+<div class="slide" style="background: #0a0a0a;">
+    <h2>5-Year Growth Trajectory</h2>
+    <canvas id="growthChart"></canvas>
+    <p style="color: #999; margin-top: 20px;">Conservative 18% penetration with 15% annual churn factored in</p>
+</div>
+
+<!-- SLIDE 8: MARKET OPPORTUNITY FUNNEL -->
+<div class="slide" style="background: #000;">
+    <h2>Market Opportunity: $3.2B → $22.5B</h2>
+    <canvas id="funnelChart"></canvas>
+    <p style="color: #999; margin-top: 20px;">Clear expansion path from target population to all UAE nationals</p>
+</div>
+
+<!-- SLIDE 9: ROI FOR DAMAN -->
+<div class="slide" style="background: #000;">
+    <h2 class="green">ROI for Daman: 1.3-2.9x Savings</h2>
+    <div class="grid-2">
+        <div class="card">
+            <h3>💰 Cost-Benefit Analysis</h3>
+            <div style="text-align: left; font-size: 20px; line-height: 2;">
+                <strong>Annual cost per 50+ member:</strong><br>
+                $16,600 - $24,900<br><br>
+                <strong>Preventable burden (70%):</strong><br>
+                $11,620 - $17,430<br><br>
+                <strong>Hayat AI reduces by 20-30%:</strong><br>
+                <span class="green" style="font-size: 28px; font-weight: 700;">$2,324 - $5,229 savings</span><br><br>
+                <strong>Hayat AI cost:</strong><br>
+                $1,800/year ($150/month)<br><br>
+                <strong class="green" style="font-size: 32px;">ROI: 1.3-2.9x</strong>
+            </div>
+        </div>
+        <div class="card">
+            <h3>📊 At Scale (38,000 members)</h3>
+            <canvas id="roiChart"></canvas>
+            <div style="margin-top: 20px; text-align: center; font-size: 24px;">
+                <strong class="green">$20-130M annual net savings for Thiqa</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 10: EXECUTION ROADMAP -->
+<div class="slide" style="background: #000;">
+    <h2>Execution Roadmap: Seed → Series A → Exit</h2>
+    <div class="grid-3">
+        <div class="card">
+            <h3 class="blue">SEED (M0-18)</h3>
+            <div style="text-align: left; font-size: 18px; line-height: 2;">
+                <strong>M0-6: Build</strong><br>
+                • Daman MOU signed<br>
+                • Team assembled<br>
+                • Platform MVP<br><br>
+                <strong>M6-12: Validate</strong><br>
+                • 500-person pilot<br>
+                • Thiqa members, 50+<br>
+                • Health Score +10<br><br>
+                <strong>M12-18: Prove</strong><br>
+                • 75%+ retention<br>
+                • Daman LOI (10K)<br>
+                • $900K ARR
+            </div>
+        </div>
+        <div class="card">
+            <h3 class="green">SERIES A (Y2)</h3>
+            <div style="text-align: left; font-size: 18px; line-height: 2;">
+                <strong>Raise: $15-20M</strong><br>
+                Pre-money: $75-90M<br><br>
+                <strong>Metrics:</strong><br>
+                • 5,925 members<br>
+                • $10.7M ARR<br>
+                • 85% retention<br>
+                • Daman LOI executed<br><br>
+                <strong>Goal:</strong><br>
+                • Scale to 14K (Y3)<br>
+                • Break-even
+            </div>
+        </div>
+        <div class="card">
+            <h3 class="purple">SCALE (Y3-5)</h3>
+            <div style="text-align: left; font-size: 18px; line-height: 2;">
+                <strong>Year 3:</strong><br>
+                14,036 members, $25.3M ARR<br>
+                Break-even<br><br>
+                <strong>Year 4:</strong><br>
+                24,931 members, $44.9M ARR<br>
+                37% EBITDA margin<br><br>
+                <strong>Year 5:</strong><br>
+                38,191 members, $68.7M ARR<br>
+                49% EBITDA margin<br>
+                <strong class="purple" style="font-size: 24px;">$570M valuation</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SLIDE 11: THANK YOU -->
+<div class="slide" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <h1>Thank You</h1>
+    <p class="subtitle">Questions?</p>
+    <div style="margin-top: 60px; font-size: 20px;">
+        <strong>Hayat AI</strong> | Digital Twin Healthspan Platform<br>
+        Targeting 213,000 Thiqa members | $15M seed raise | 11.4x returns
+    </div>
+</div>
+
+<script>
+// Healthspan Gap Chart
+const healthspanCtx = document.getElementById('healthspanChart').getContext('2d');
+new Chart(healthspanCtx, {
+    type: 'bar',
+    data: {
+        labels: ['2000', '2019'],
+        datasets: [{
+            label: 'Healthspan Gap (Years)',
+            data: [11, 16],
+            backgroundColor: ['#ff9500', '#ff3b30'],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'UAE Healthspan Gap Worsened 45%', color: '#fff', font: { size: 24 } }
+        },
+        scales: {
+            y: { beginAtZero: true, ticks: { color: '#fff' }, grid: { color: '#333' } },
+            x: { ticks: { color: '#fff' }, grid: { display: false } }
+        }
+    }
+});
+
+// Growth Chart
+const growthCtx = document.getElementById('growthChart').getContext('2d');
+new Chart(growthCtx, {
+    type: 'line',
+    data: {
+        labels: ['Pilot', 'Year 2', 'Year 3', 'Year 4', 'Year 5'],
+        datasets: [{
+            label: 'Members',
+            data: [500, 5925, 14036, 24931, 38191],
+            borderColor: '#af52de',
+            backgroundColor: 'rgba(175, 82, 222, 0.1)',
+            tension: 0.4,
+            fill: true
+        }, {
+            label: 'ARR ($M)',
+            data: [0.9, 10.7, 25.3, 44.9, 68.7],
+            borderColor: '#ffcc00',
+            backgroundColor: 'rgba(255, 204, 0, 0.1)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { labels: { color: '#fff', font: { size: 16 } } }
+        },
+        scales: {
+            y: { ticks: { color: '#fff' }, grid: { color: '#333' } },
+            x: { ticks: { color: '#fff' }, grid: { display: false } }
+        }
+    }
+});
+
+// Market Funnel Chart
+const funnelCtx = document.getElementById('funnelChart').getContext('2d');
+new Chart(funnelCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Target (50+)', 'All Thiqa', 'All UAE Nationals'],
+        datasets: [{
+            label: 'TAM ($B)',
+            data: [3.2, 12, 22.5],
+            backgroundColor: ['#007aff', '#34c759', '#af52de'],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        indexAxis: 'y',
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            x: { ticks: { color: '#fff' }, grid: { color: '#333' } },
+            y: { ticks: { color: '#fff' }, grid: { display: false } }
+        }
+    }
+});
+
+// ROI Chart
+const roiCtx = document.getElementById('roiChart').getContext('2d');
+new Chart(roiCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Hayat AI Cost', 'Healthcare Savings'],
+        datasets: [{
+            label: 'Per Member ($)',
+            data: [1800, 3877],
+            backgroundColor: ['#ff9500', '#34c759'],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true, ticks: { color: '#fff' }, grid: { color: '#333' } },
+            x: { ticks: { color: '#fff' }, grid: { display: false } }
+        }
+    }
+});
+</script>
+
+</body>
+</html>
